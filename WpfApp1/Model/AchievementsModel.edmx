@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище AttainmentModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AchievementTBL">
+          <Key>
+            <PropertyRef Name="idAchievement" />
+          </Key>
+          <Property Name="idAchievement" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleAchievement" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeAchievement" Type="int" Nullable="false" />
+          <Property Name="Student" Type="int" Nullable="false" />
+          <Property Name="infoAchievement" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateReceived" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentsTBL">
+          <Key>
+            <PropertyRef Name="idStudents" />
+          </Key>
+          <Property Name="idStudents" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Groups" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypeAchievementTBL">
+          <Key>
+            <PropertyRef Name="idType" />
+          </Key>
+          <Property Name="idType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeAchievement" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AchievementTBL_StudentsTBL">
+          <End Role="StudentsTBL" Type="Self.StudentsTBL" Multiplicity="1" />
+          <End Role="AchievementTBL" Type="Self.AchievementTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentsTBL">
+              <PropertyRef Name="idStudents" />
+            </Principal>
+            <Dependent Role="AchievementTBL">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementTBL_TypeAchievementTBL">
+          <End Role="TypeAchievementTBL" Type="Self.TypeAchievementTBL" Multiplicity="1" />
+          <End Role="AchievementTBL" Type="Self.AchievementTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeAchievementTBL">
+              <PropertyRef Name="idType" />
+            </Principal>
+            <Dependent Role="AchievementTBL">
+              <PropertyRef Name="TypeAchievement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище AttainmentModelContainer">
+          <EntitySet Name="AchievementTBL" EntityType="Self.AchievementTBL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsTBL" EntityType="Self.StudentsTBL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeAchievementTBL" EntityType="Self.TypeAchievementTBL" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AchievementTBL_StudentsTBL" Association="Self.FK_AchievementTBL_StudentsTBL">
+            <End Role="StudentsTBL" EntitySet="StudentsTBL" />
+            <End Role="AchievementTBL" EntitySet="AchievementTBL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementTBL_TypeAchievementTBL" Association="Self.FK_AchievementTBL_TypeAchievementTBL">
+            <End Role="TypeAchievementTBL" EntitySet="TypeAchievementTBL" />
+            <End Role="AchievementTBL" EntitySet="AchievementTBL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AttainmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AchievementTBL">
+          <Key>
+            <PropertyRef Name="idAchievement" />
+          </Key>
+          <Property Name="idAchievement" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleAchievement" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeAchievement" Type="Int32" Nullable="false" />
+          <Property Name="Student" Type="Int32" Nullable="false" />
+          <Property Name="infoAchievement" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateReceived" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="StudentsTBL" Relationship="Self.FK_AchievementTBL_StudentsTBL" FromRole="AchievementTBL" ToRole="StudentsTBL" />
+          <NavigationProperty Name="TypeAchievementTBL" Relationship="Self.FK_AchievementTBL_TypeAchievementTBL" FromRole="AchievementTBL" ToRole="TypeAchievementTBL" />
+        </EntityType>
+        <EntityType Name="StudentsTBL">
+          <Key>
+            <PropertyRef Name="idStudents" />
+          </Key>
+          <Property Name="idStudents" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Groups" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AchievementTBLs" Relationship="Self.FK_AchievementTBL_StudentsTBL" FromRole="StudentsTBL" ToRole="AchievementTBL" />
+        </EntityType>
+        <EntityType Name="TypeAchievementTBL">
+          <Key>
+            <PropertyRef Name="idType" />
+          </Key>
+          <Property Name="idType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeAchievement" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AchievementTBLs" Relationship="Self.FK_AchievementTBL_TypeAchievementTBL" FromRole="TypeAchievementTBL" ToRole="AchievementTBL" />
+        </EntityType>
+        <Association Name="FK_AchievementTBL_StudentsTBL">
+          <End Role="StudentsTBL" Type="Self.StudentsTBL" Multiplicity="1" />
+          <End Role="AchievementTBL" Type="Self.AchievementTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentsTBL">
+              <PropertyRef Name="idStudents" />
+            </Principal>
+            <Dependent Role="AchievementTBL">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementTBL_TypeAchievementTBL">
+          <End Role="TypeAchievementTBL" Type="Self.TypeAchievementTBL" Multiplicity="1" />
+          <End Role="AchievementTBL" Type="Self.AchievementTBL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeAchievementTBL">
+              <PropertyRef Name="idType" />
+            </Principal>
+            <Dependent Role="AchievementTBL">
+              <PropertyRef Name="TypeAchievement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AttainmentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AchievementTBLs" EntityType="Self.AchievementTBL" />
+          <EntitySet Name="StudentsTBLs" EntityType="Self.StudentsTBL" />
+          <EntitySet Name="TypeAchievementTBLs" EntityType="Self.TypeAchievementTBL" />
+          <AssociationSet Name="FK_AchievementTBL_StudentsTBL" Association="Self.FK_AchievementTBL_StudentsTBL">
+            <End Role="StudentsTBL" EntitySet="StudentsTBLs" />
+            <End Role="AchievementTBL" EntitySet="AchievementTBLs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementTBL_TypeAchievementTBL" Association="Self.FK_AchievementTBL_TypeAchievementTBL">
+            <End Role="TypeAchievementTBL" EntitySet="TypeAchievementTBLs" />
+            <End Role="AchievementTBL" EntitySet="AchievementTBLs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AttainmentModelContainer" CdmEntityContainer="AttainmentEntities">
+          <EntitySetMapping Name="AchievementTBLs">
+            <EntityTypeMapping TypeName="AttainmentModel.AchievementTBL">
+              <MappingFragment StoreEntitySet="AchievementTBL">
+                <ScalarProperty Name="idAchievement" ColumnName="idAchievement" />
+                <ScalarProperty Name="TitleAchievement" ColumnName="TitleAchievement" />
+                <ScalarProperty Name="TypeAchievement" ColumnName="TypeAchievement" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="infoAchievement" ColumnName="infoAchievement" />
+                <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsTBLs">
+            <EntityTypeMapping TypeName="AttainmentModel.StudentsTBL">
+              <MappingFragment StoreEntitySet="StudentsTBL">
+                <ScalarProperty Name="idStudents" ColumnName="idStudents" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Groups" ColumnName="Groups" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeAchievementTBLs">
+            <EntityTypeMapping TypeName="AttainmentModel.TypeAchievementTBL">
+              <MappingFragment StoreEntitySet="TypeAchievementTBL">
+                <ScalarProperty Name="idType" ColumnName="idType" />
+                <ScalarProperty Name="TypeAchievement" ColumnName="TypeAchievement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
