@@ -24,5 +24,16 @@ namespace WpfApp1.View
         {
             InitializeComponent();
         }
+
+        private void St_MouseLeave(object sender, MouseEventArgs e)
+        {
+        
+        }
+
+        private void St_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Console.WriteLine(St.Visibility.ToString());
+            
+        }
     }
 }

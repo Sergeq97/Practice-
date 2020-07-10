@@ -12,16 +12,38 @@ namespace WpfApp1.ViewModel
     class TypeAchievementsVM : BaseHelper
     {
         private AttainmentEntities entities = null;
+        private TypeAchievementTBL oldType = null;
         RelayCommand addCommand;
+        RelayCommand editVisibilityCommand;
         RelayCommand editCommand;
         RelayCommand cancelCommand;
         RelayCommand deleteCommand;
         TypeAchievementTBL selectedItem = null;
-
+        Visibility visibility = Visibility.Collapsed;
         private ObservableCollection<TypeAchievementTBL> typeAchievement = null;
 
-        public Visibility GetVisibility { get; set; } = Visibility.Collapsed;
+        public Visibility GetVisibility
+        {
+            get { return visibility; }
+            set
+            {
+                visibility = value;
+                OnPropertyChnge(nameof(GetVisibility));
+            }
+        }
 
+        public RelayCommand EditVisibilityCommand
+        {
+            get
+            {
+                return editVisibilityCommand ?? (editVisibilityCommand = new RelayCommand(o =>
+               {
+                   if(selectedItem != null)
+                     GetVisibility = Visibility.Visible;
+               }));
+            }
+
+        }
         public TypeAchievementTBL SelectedItem
         {
             get { return selectedItem; }
@@ -30,9 +52,9 @@ namespace WpfApp1.ViewModel
                 if (value != null)
                 {
                     selectedItem = value;
-                    GetVisibility = Visibility.Visible;
+                    oldType = selectedItem.Clone() as TypeAchievementTBL;
                     OnPropertyChnge(nameof(SelectedItem));
-                    OnPropertyChnge(nameof(GetVisibility));
+
                 }
             }
         }
@@ -41,14 +63,15 @@ namespace WpfApp1.ViewModel
             get
             {
                 return cancelCommand ??
-                   (cancelCommand = new  RelayCommand(obj =>
-                   {
-                      
-                       GetVisibility = Visibility.Collapsed;
-                       SelectedItem = null;
-                       OnPropertyChnge(nameof(GetVisibility));
-                       OnPropertyChnge(nameof(SelectedItem));
-                   }));
+                   (cancelCommand = new RelayCommand(obj =>
+                  {
+
+                      SelectedItem.TypeAchievement = oldType.TypeAchievement;
+                      SelectedItem = null;
+                      GetVisibility = Visibility.Collapsed;
+
+
+                  }));
             }
 
         }
@@ -68,10 +91,46 @@ namespace WpfApp1.ViewModel
             {
                 return editCommand ?? (editCommand = new RelayCommand((o) =>
                 {
-
+                    if (selectedItem != null && !string.IsNullOrEmpty(selectedItem.TypeAchievement))
+                    {
+                        var editItem = entities.TypeAchievementTBLs.Find(selectedItem.idType);
+                        if (editItem != null)
+                        {
+                            editItem.TypeAchievement = editItem.TypeAchievement;
+                            entities.Entry(editItem).State = EntityState.Modified;
+                            entities.SaveChanges();
+                        }
+                    }
                 }));
             }
         }
+
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ?? (deleteCommand = new RelayCommand((o) =>
+                {
+                    GetVisibility = Visibility.Collapsed;
+                    OnPropertyChnge(nameof(GetVisibility));
+                    if (selectedItem != null)
+                    {
+                        var deletedItem = entities.TypeAchievementTBLs.Find(selectedItem.idType);
+                        if (deletedItem != null)
+                        {
+
+                            entities.TypeAchievementTBLs.Remove(deletedItem);
+                            entities.Entry(deletedItem).State = EntityState.Deleted;
+                            entities.SaveChanges();
+                            TypeAchievement.Remove(selectedItem);
+                            selectedItem = null;
+                        }
+                    }
+                }));
+            }
+        }
+
+
         //public RelayCommand AddCommand
         //{
 

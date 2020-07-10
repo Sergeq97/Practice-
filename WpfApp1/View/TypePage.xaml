@@ -9,48 +9,72 @@
       d:DesignHeight="450" d:DesignWidth="800"
      
       Title="TypePage">
+
+
+
     <Page.DataContext>
         <vmType:TypeAchievementsVM/>
     </Page.DataContext>
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="50"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <DataGrid Grid.Column="0" 
-                  x:Name="grid"
-                  
+                  x:Name="grid"       
                   SelectedItem="{Binding SelectedItem}"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding TypeAchievement}" IsReadOnly="True" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Тип достижений" Binding="{Binding Path=TypeAchievement}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Изменить" Command="{Binding
+                                Path=DataContext.EditVisibilityCommand,
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor,
+                                AncestorType=Page}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Удалить" Command="{Binding Path=DataContext.DeleteCommand, 
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type Page}}}" 
+                               />
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
         </DataGrid>
         <StackPanel  
+                      
+                      MouseLeave="St_MouseLeave"
                       x:Name="St"
                       Visibility="{Binding Path=GetVisibility,
                                    UpdateSourceTrigger=PropertyChanged}"
-                     
+                     IsVisibleChanged="St_IsVisibleChanged"
                       Grid.Column="1"
                       Orientation="Vertical">
             <StackPanel.Style>
-                <Style>
-                    <Style.Triggers>
-                        <Trigger Property="StackPanel.Visibility" Value="Visible">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="0:0:3" 
-                                             From="0"
-                                             To="1"
-                                             Storyboard.TargetProperty="Opacity"
-                                             />
-                                        <DoubleAnimation Duration="0:0:2" 
-                                             From="0"
+                <Style >
+                    <Style.Triggers >
+                        <Trigger  Property="StackPanel.Visibility"  
+                                 Value="Visible">
+                            <Trigger.EnterActions  >
+                                <BeginStoryboard >
+                                    <Storyboard >
+                                        <DoubleAnimation 
+                                             Duration="0:0:2" 
+                                             From="0"  
                                              To="150"
                                              Storyboard.TargetProperty="Width"
                                              />
@@ -58,16 +82,15 @@
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                         </Trigger>
-                    </Style.Triggers>
+                      </Style.Triggers>
                 </Style>
             </StackPanel.Style>
-
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Тип достижений"/>
                 <TextBox MinWidth="50"
                     Text="{Binding Path=SelectedItem.TypeAchievement}"/>
             </StackPanel>
-            <Button Content="Ok"/>
+            <Button Content="Ok" Command="{Binding Path=EditCommand}" />
             <Button x:Name="cnButton"
                     Content="Отмена"
                     Command="{Binding Path=CancelCommand}">
