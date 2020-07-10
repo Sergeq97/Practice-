@@ -9,19 +9,19 @@ using System.Windows;
 using WpfApp1.Model;
 namespace WpfApp1.ViewModel
 {
-    class TypeAchievementsVM : BaseHelper
+    class AchievementsVM : BaseHelper
     {
         private AttainmentEntities entities = null;
-        private TypeAchievementTBL oldType = null;
+        private AchievementTBL oldType = null;
         private string text = "";
         RelayCommand editVisibilityCommand;
         RelayCommand editCommand;
         RelayCommand cancelCommand;
         RelayCommand deleteCommand;
         RelayCommand insertCommand;
-        TypeAchievementTBL selectedItem = null;
+        AchievementTBL selectedItem = null;
         Visibility visibility = Visibility.Collapsed;
-        private ObservableCollection<TypeAchievementTBL> typeAchievement = null;
+        private ObservableCollection<AchievementTBL> typeAchievement = null;
 
         public string GetString
         {
@@ -50,7 +50,7 @@ namespace WpfApp1.ViewModel
                {
                    if (selectedItem != null)
                    {
-                       GetString = selectedItem.TypeAchievement;
+                       GetString = selectedItem.TitleAchievement;
                        GetVisibility = Visibility.Visible;
                    }
                }));
@@ -69,7 +69,7 @@ namespace WpfApp1.ViewModel
             }
 
         }
-        public TypeAchievementTBL SelectedItem
+        public AchievementTBL SelectedItem
         {
             get { return selectedItem; }
             set
@@ -77,8 +77,8 @@ namespace WpfApp1.ViewModel
                 selectedItem = value;
                 if (value != null)
                 {
-                    GetString = value.TypeAchievement;
-                    oldType = selectedItem.Clone() as TypeAchievementTBL;
+                    GetString = value.TitleAchievement;
+                    oldType = selectedItem.Clone() as AchievementTBL;
                     OnPropertyChnge(nameof(SelectedItem));
                 }
 
@@ -91,14 +91,14 @@ namespace WpfApp1.ViewModel
                 return cancelCommand ??
                    (cancelCommand = new RelayCommand(obj =>
                   {
-                      SelectedItem.TypeAchievement = oldType.TypeAchievement;
+                      SelectedItem.TitleAchievement = oldType.TitleAchievement;
                       SelectedItem = null;
                       GetVisibility = Visibility.Collapsed;
                   }));
             }
 
         }
-        public ObservableCollection<TypeAchievementTBL> TypeAchievement
+        public ObservableCollection<AchievementTBL> TypeAchievement
         {
             get { return typeAchievement; }
             set
@@ -119,11 +119,11 @@ namespace WpfApp1.ViewModel
                     {
                         if (!string.IsNullOrEmpty(GetString))
                         {
-                            var editItem = entities.TypeAchievementTBLs.Find(SelectedItem.idType);
+                            var editItem = entities.AchievementTBLs.Find(SelectedItem.idAchievement);
                             if (editItem != null)
                             {
 
-                                editItem.TypeAchievement = GetString;
+                                editItem.infoAchievement = GetString;
                                 entities.Entry(editItem).State = EntityState.Modified;
                                 entities.SaveChanges();
                                 
@@ -141,7 +141,7 @@ namespace WpfApp1.ViewModel
                         entities.SaveChanges();
                     }
                     entities.TypeAchievementTBLs.Load();
-                    TypeAchievement = entities.TypeAchievementTBLs.Local;
+                    TypeAchievement = entities.AchievementTBLs.Local;
                 }));
             }
         }
@@ -155,11 +155,11 @@ namespace WpfApp1.ViewModel
                     GetVisibility = Visibility.Collapsed;
                     if (selectedItem != null)
                     {
-                        var deletedItem = entities.TypeAchievementTBLs.Find(selectedItem.idType);
+                        var deletedItem = entities.AchievementTBLs.Find(selectedItem.idAchievement);
                         if (deletedItem != null)
                         {
 
-                            entities.TypeAchievementTBLs.Remove(deletedItem);
+                            entities.AchievementTBLs.Remove(deletedItem);
                             entities.Entry(deletedItem).State = EntityState.Deleted;
                             entities.SaveChanges();
                             TypeAchievement.Remove(selectedItem);
@@ -171,32 +171,12 @@ namespace WpfApp1.ViewModel
         }
 
 
-        //public RelayCommand AddCommand
-        //{
-
-        //    get
-        //    {
-        //        return addCommand ??
-        //            (addCommand = new RelayCommand((o) =>
-        //            {
-        //                //PhoneViewModel vm = new PhoneViewModel();
-        //                phoneWindow = new PhoneWindow(new Phone());
-        //                if (phoneWindow.ShowDialog() == true)
-        //                {
-        //                    TypeAchievementTBL type = phoneWindow.Phone;
-        //                    entities.TypeAchievementTBLs.Add(type);
-        //                    entities.SaveChanges();
-        //                }
-        //            }));
-        //    }
-        //}
-
-        public TypeAchievementsVM()
+        public AchievementsVM()
         {
             entities = new AttainmentEntities();
-            entities.TypeAchievementTBLs.Load();
-            var collect = entities.TypeAchievementTBLs.Local.ToBindingList();
-            TypeAchievement = new ObservableCollection<TypeAchievementTBL>(collect);
+            entities.AchievementTBLs.Load();
+            var collect = entities.AchievementTBLs.Local.ToBindingList();
+            TypeAchievement = new ObservableCollection<AchievementTBL>(collect);
         }
     }
 }

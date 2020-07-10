@@ -9,19 +9,19 @@ using System.Windows;
 using WpfApp1.Model;
 namespace WpfApp1.ViewModel
 {
-    class TypeAchievementsVM : BaseHelper
+    class StudentsVM : BaseHelper
     {
         private AttainmentEntities entities = null;
-        private TypeAchievementTBL oldType = null;
+        private StudentsTBL oldType = null;
         private string text = "";
         RelayCommand editVisibilityCommand;
         RelayCommand editCommand;
         RelayCommand cancelCommand;
         RelayCommand deleteCommand;
         RelayCommand insertCommand;
-        TypeAchievementTBL selectedItem = null;
+        StudentsTBL selectedItem = null;
         Visibility visibility = Visibility.Collapsed;
-        private ObservableCollection<TypeAchievementTBL> typeAchievement = null;
+        private ObservableCollection<StudentsTBL> typeAchievement = null;
 
         public string GetString
         {
@@ -50,7 +50,7 @@ namespace WpfApp1.ViewModel
                {
                    if (selectedItem != null)
                    {
-                       GetString = selectedItem.TypeAchievement;
+                       GetString = selectedItem.FirstName;
                        GetVisibility = Visibility.Visible;
                    }
                }));
@@ -69,7 +69,7 @@ namespace WpfApp1.ViewModel
             }
 
         }
-        public TypeAchievementTBL SelectedItem
+        public StudentsTBL SelectedItem
         {
             get { return selectedItem; }
             set
@@ -77,8 +77,8 @@ namespace WpfApp1.ViewModel
                 selectedItem = value;
                 if (value != null)
                 {
-                    GetString = value.TypeAchievement;
-                    oldType = selectedItem.Clone() as TypeAchievementTBL;
+                    GetString = value.FirstName;
+                    oldType = selectedItem.Clone() as StudentsTBL;
                     OnPropertyChnge(nameof(SelectedItem));
                 }
 
@@ -91,14 +91,14 @@ namespace WpfApp1.ViewModel
                 return cancelCommand ??
                    (cancelCommand = new RelayCommand(obj =>
                   {
-                      SelectedItem.TypeAchievement = oldType.TypeAchievement;
+                      SelectedItem.FirstName = oldType.FirstName;
                       SelectedItem = null;
                       GetVisibility = Visibility.Collapsed;
                   }));
             }
 
         }
-        public ObservableCollection<TypeAchievementTBL> TypeAchievement
+        public ObservableCollection<StudentsTBL> TypeAchievement
         {
             get { return typeAchievement; }
             set
@@ -119,11 +119,11 @@ namespace WpfApp1.ViewModel
                     {
                         if (!string.IsNullOrEmpty(GetString))
                         {
-                            var editItem = entities.TypeAchievementTBLs.Find(SelectedItem.idType);
+                            var editItem = entities.StudentsTBLs.Find(SelectedItem.idStudents);
                             if (editItem != null)
                             {
 
-                                editItem.TypeAchievement = GetString;
+                                editItem.FirstName = GetString;
                                 entities.Entry(editItem).State = EntityState.Modified;
                                 entities.SaveChanges();
                                 
@@ -132,16 +132,16 @@ namespace WpfApp1.ViewModel
                     }
                     else
                     {
-                        var inertItem = new TypeAchievementTBL();
+                        var inertItem = new StudentsTBL();
                         if (o is string)
-                            inertItem.TypeAchievement = (string)o;
+                            inertItem.FirstName = (string)o;
 
                         entities.Entry(inertItem).State = EntityState.Added;
-                        entities.TypeAchievementTBLs.Add(inertItem);
+                        entities.StudentsTBLs.Add(inertItem);
                         entities.SaveChanges();
                     }
                     entities.TypeAchievementTBLs.Load();
-                    TypeAchievement = entities.TypeAchievementTBLs.Local;
+                    TypeAchievement = entities.StudentsTBLs.Local;
                 }));
             }
         }
@@ -155,11 +155,11 @@ namespace WpfApp1.ViewModel
                     GetVisibility = Visibility.Collapsed;
                     if (selectedItem != null)
                     {
-                        var deletedItem = entities.TypeAchievementTBLs.Find(selectedItem.idType);
+                        var deletedItem = entities.StudentsTBLs.Find(selectedItem.idStudents);
                         if (deletedItem != null)
                         {
 
-                            entities.TypeAchievementTBLs.Remove(deletedItem);
+                            entities.StudentsTBLs.Remove(deletedItem);
                             entities.Entry(deletedItem).State = EntityState.Deleted;
                             entities.SaveChanges();
                             TypeAchievement.Remove(selectedItem);
@@ -170,33 +170,12 @@ namespace WpfApp1.ViewModel
             }
         }
 
-
-        //public RelayCommand AddCommand
-        //{
-
-        //    get
-        //    {
-        //        return addCommand ??
-        //            (addCommand = new RelayCommand((o) =>
-        //            {
-        //                //PhoneViewModel vm = new PhoneViewModel();
-        //                phoneWindow = new PhoneWindow(new Phone());
-        //                if (phoneWindow.ShowDialog() == true)
-        //                {
-        //                    TypeAchievementTBL type = phoneWindow.Phone;
-        //                    entities.TypeAchievementTBLs.Add(type);
-        //                    entities.SaveChanges();
-        //                }
-        //            }));
-        //    }
-        //}
-
-        public TypeAchievementsVM()
+        public StudentsVM()
         {
             entities = new AttainmentEntities();
-            entities.TypeAchievementTBLs.Load();
-            var collect = entities.TypeAchievementTBLs.Local.ToBindingList();
-            TypeAchievement = new ObservableCollection<TypeAchievementTBL>(collect);
+            entities.StudentsTBLs.Load();
+            var collect = entities.StudentsTBLs.Local.ToBindingList();
+            TypeAchievement = new ObservableCollection<StudentsTBL>(collect);
         }
     }
 }

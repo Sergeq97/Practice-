@@ -66,6 +66,8 @@
     </ApplicationDefinition>
     <Compile Include="ViewModel\Base\BaseHelper.cs" />
     <Compile Include="ViewModel\Base\RelayCommand.cs" />
+    <Compile Include="ViewModel\StudentsVM.cs" />
+    <Compile Include="ViewModel\AchievementsVM.cs" />
     <Compile Include="ViewModel\TypeAchievementsVM.cs" />
     <Compile Include="View\TypePage.xaml.cs">
       <DependentUpon>TypePage.xaml</DependentUpon>

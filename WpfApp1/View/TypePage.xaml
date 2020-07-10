@@ -21,42 +21,53 @@
             <ColumnDefinition MinWidth="50"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <DataGrid Grid.Column="0" 
+        <Grid Grid.Column="0" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition MaxHeight="20"/>
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Row="0" 
                   x:Name="grid"       
                   SelectedItem="{Binding SelectedItem}"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding TypeAchievement}" IsReadOnly="True" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Тип достижений" Binding="{Binding Path=TypeAchievement}"/>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Изменить" Command="{Binding
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Тип достижений" Binding="{Binding Path=TypeAchievement}"/>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Изменить" Command="{Binding
                                 Path=DataContext.EditVisibilityCommand,
                                 RelativeSource={RelativeSource
                                 Mode=FindAncestor,
                                 AncestorType=Page}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Удалить" Command="{Binding Path=DataContext.DeleteCommand, 
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Удалить" 
+                                Command="{Binding Path=DataContext.DeleteCommand, 
                                 RelativeSource={RelativeSource
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type Page}}}" 
                                />
 
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
 
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
 
-        </DataGrid>
-        <StackPanel  
-                      
+            </DataGrid>
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                <Button Content="Добавить" Command="{Binding 
+                    Path=InserVisibilityCommand}"/>
+            </StackPanel>
+        </Grid>
+      
+        <StackPanel                      
                       MouseLeave="St_MouseLeave"
                       x:Name="St"
                       Visibility="{Binding Path=GetVisibility,
@@ -87,10 +98,11 @@
             </StackPanel.Style>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Тип достижений"/>
-                <TextBox MinWidth="50"
-                    Text="{Binding Path=SelectedItem.TypeAchievement}"/>
+                <TextBox MinWidth="50" x:Name="tbPole"
+                    Text="{Binding Path=GetString,
+                    UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            <Button Content="Ok" Command="{Binding Path=EditCommand}" />
+            <Button Content="Ok" Command="{Binding Path=EditAndInsertCommand}" CommandParameter="{Binding ElementName=tbPole,Path=Text}" />
             <Button x:Name="cnButton"
                     Content="Отмена"
                     Command="{Binding Path=CancelCommand}">
