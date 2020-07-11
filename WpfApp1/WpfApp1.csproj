@@ -69,6 +69,9 @@
     <Compile Include="ViewModel\StudentsVM.cs" />
     <Compile Include="ViewModel\AchievementsVM.cs" />
     <Compile Include="ViewModel\TypeAchievementsVM.cs" />
+    <Compile Include="View\AttainmentView.xaml.cs">
+      <DependentUpon>AttainmentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StudentsView.xaml.cs">
       <DependentUpon>StudentsView.xaml</DependentUpon>
     </Compile>
@@ -87,6 +90,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AttainmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\StudentsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
