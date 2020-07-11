@@ -104,11 +104,25 @@ namespace WpfApp1.ViewModel
                     GetLastName = value.LastName;
                     GetGroup = value.Groups;
                     GetFirstName = value.FirstName;
-                    oldType = selectedItem.Clone() as StudentsTBL;
+                    oldType = CloneItem();
                     OnPropertyChnge(nameof(SelectedItem));
                 }
 
             }
+        }
+
+        private StudentsTBL CloneItem()
+        {
+            if (SelectedItem == null)
+                return null;
+            return new StudentsTBL()
+            {
+                idStudents = SelectedItem.idStudents,
+                LastName = SelectedItem.LastName,
+                FirstName = SelectedItem.FirstName,
+                Groups = SelectedItem.Groups,
+                AchievementTBLs = SelectedItem.AchievementTBLs,
+            };
         }
         public RelayCommand CancelCommand
         {

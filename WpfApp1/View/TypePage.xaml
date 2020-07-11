@@ -41,6 +41,7 @@
                                 AncestorType=Page}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                        
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
@@ -51,7 +52,6 @@
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type Page}}}" 
                                />
-
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
 
