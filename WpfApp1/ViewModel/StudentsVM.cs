@@ -191,7 +191,6 @@ namespace WpfApp1.ViewModel
                             inertItem.FirstName = GetFirstName;
                             inertItem.Groups = GetGroup;
                             inertItem.LastName = GetLastName;
-
                             entities.Entry(inertItem).State = EntityState.Added;
                             entities.StudentsTBLs.Add(inertItem);
                             entities.SaveChanges();

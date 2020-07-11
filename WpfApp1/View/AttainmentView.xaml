@@ -118,38 +118,41 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Име:" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="Наименование:" Grid.Column="0" Grid.Row="0"/>
                 <TextBox MinWidth="100" MaxWidth="300" 
                         Text="{Binding Path=GetTitle,
                                        UpdateSourceTrigger=PropertyChanged}"
                                        Grid.Column="1" Grid.Row="0"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" 
-                               Text="Фамилия:"/>
+                               Text="Типд достежения:"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" 
                              DisplayMemberPath="TypeAchievement"
+                             SelectedValue="{Binding TypeGet}"
                              SelectedItem="{Binding SelectedItem.TypeAchievementTBL}"
-                             ItemsSource="{Binding Path=GetType,
+                             ItemsSource="{Binding Path=GetTypes,
                                             UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Группа:"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Информация:"/>
                 <TextBox Grid.Row="2" Grid.Column="1"
                                       Text="{Binding Path=GetInfo,
                                                      UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Группа:"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Студент:"/>
                 <ComboBox Grid.Row="3" Grid.Column="1"
+                                       DisplayMemberPath="LastName"
+                                       SelectedValue="{Binding GetStud}"
                                        SelectedItem="{Binding SelectedItem.StudentsTBL}"
                                        ItemsSource ="{Binding Path=GetStudents,
                                                      UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Группа:"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Дата:"/>
                 <DatePickerTextBox Grid.Row="4" Grid.Column="1" 
-                                   Text="{Binding Path=GetGroup,
+                                   Text="{Binding Path=GetDate,
                                                   UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Border Padding="0 4 0 0">
                 <StackPanel Orientation="Vertical">
                     <Button  Margin="0 0 0 2" Content="Ok" Command="{Binding Path=EditAndInsertCommand}"
-                             CommandParameter="{Binding ElementName=tbPole,Path=Text}" />
+                             />
                     <Button x:Name="cnButton"
                             Margin="0 0 0 2" Content="Отмена"
                             Command="{Binding Path=CancelCommand}">

@@ -13,7 +13,13 @@ namespace WpfApp1.ViewModel
     {
         private AttainmentEntities entities = null;
         private AchievementTBL oldType = null;
-        private string text = "";
+        private StudentsTBL student = null;
+        private TypeAchievementTBL type = null;
+        private string textTitle = "";
+        private string textInfo = "";
+        private DateTime? date = null;
+        private ObservableCollection<StudentsTBL> studentCollect = null;
+        private ObservableCollection<TypeAchievementTBL> typeCollect = null;
         RelayCommand editVisibilityCommand;
         RelayCommand editCommand;
         RelayCommand cancelCommand;
@@ -23,13 +29,51 @@ namespace WpfApp1.ViewModel
         Visibility visibility = Visibility.Collapsed;
         private ObservableCollection<AchievementTBL> typeAchievement = null;
 
-        public string GetString
+
+
+        public string GetTitle
         {
-            get { return text; }
+            get { return textTitle; }
             set
             {
-                text = value;
-                OnPropertyChnge(nameof(GetString));
+                textTitle = value;
+                OnPropertyChnge(nameof(GetTitle));
+            }
+        }
+        public string GetInfo
+        {
+            get { return textInfo; }
+            set
+            {
+                textInfo = value;
+                OnPropertyChnge(nameof(GetInfo));
+            }
+        }
+        public ObservableCollection<StudentsTBL> GetStudents
+        {
+            get { return studentCollect; }
+            set
+            {
+                studentCollect = value;
+                OnPropertyChnge(nameof(GetStudents));
+            }
+        }
+        public ObservableCollection<TypeAchievementTBL> GetTypes
+        {
+            get { return typeCollect; }
+            set
+            {
+                typeCollect = value;
+                OnPropertyChnge(nameof(GetTypes));
+            }
+        }
+        public DateTime? GetDate
+        {
+            get { return date; }
+            set
+            {
+                date = value;
+                OnPropertyChnge(nameof(GetDate));
             }
         }
         public Visibility GetVisibility
@@ -50,7 +94,9 @@ namespace WpfApp1.ViewModel
                {
                    if (selectedItem != null)
                    {
-                       GetString = selectedItem.TitleAchievement;
+                       GetTitle = selectedItem.TitleAchievement;
+                       GetInfo = selectedItem.infoAchievement;
+                       GetDate = selectedItem.DateReceived;
                        GetVisibility = Visibility.Visible;
                    }
                }));
@@ -63,7 +109,9 @@ namespace WpfApp1.ViewModel
                 return insertCommand ?? (insertCommand = new RelayCommand(o =>
                 {
                     SelectedItem = null;
-                    GetString = "";
+                    GetTitle = "";
+                    GetInfo = "";
+                    GetDate = null;
                     GetVisibility = Visibility.Visible;
                 }));
             }
@@ -77,11 +125,38 @@ namespace WpfApp1.ViewModel
                 selectedItem = value;
                 if (value != null)
                 {
-                    GetString = value.TitleAchievement;
-                    oldType = CLoneItem() ;
+                    GetTitle = selectedItem.TitleAchievement;
+                    GetInfo = selectedItem.infoAchievement;
+                    GetDate = selectedItem.DateReceived;
+                    oldType = CLoneItem();
                     OnPropertyChnge(nameof(SelectedItem));
                 }
 
+            }
+        }
+
+        public StudentsTBL GetStud
+        {
+            get { return student; }
+            set
+            {
+                if (value != null)
+                {
+                    student = value;
+                    OnPropertyChnge(nameof(GetStud));
+                }
+            }
+        }
+        public TypeAchievementTBL TypeGet
+        {
+            get { return type; }
+            set
+            {
+                if (value != null)
+                {
+                    type = value;
+                    OnPropertyChnge(nameof(TypeGet));
+                }
             }
         }
         public AchievementTBL CLoneItem()
@@ -125,6 +200,15 @@ namespace WpfApp1.ViewModel
             }
 
         }
+        private bool IsNullStrings(params string[] str)
+        {
+            foreach (var item in str)
+            {
+                if (string.IsNullOrEmpty(item))
+                    return false;
+            }
+            return true;
+        }
         public RelayCommand EditAndInsertCommand
         {
             get
@@ -133,27 +217,37 @@ namespace WpfApp1.ViewModel
                 {
                     if (SelectedItem != null)
                     {
-                        if (!string.IsNullOrEmpty(GetString))
+                        if (IsNullStrings(GetInfo, GetTitle, GetDate.ToString()))
                         {
                             var editItem = entities.AchievementTBLs.Find(SelectedItem.idAchievement);
                             if (editItem != null)
                             {
-
-                                editItem.infoAchievement = GetString;
+                                editItem.infoAchievement = GetInfo;
+                                editItem.TitleAchievement = GetTitle;
+                                editItem.DateReceived = GetDate.Value;
+                                editItem.Student = SelectedItem.StudentsTBL.idStudents;
+                                editItem.StudentsTBL = SelectedItem.StudentsTBL;
+                                editItem.TypeAchievement = SelectedItem.TypeAchievementTBL.idType;
+                                editItem.TypeAchievementTBL = SelectedItem.TypeAchievementTBL;
                                 entities.Entry(editItem).State = EntityState.Modified;
                                 entities.SaveChanges();
+
 
                             }
                         }
                     }
                     else
                     {
-                        var inertItem = new TypeAchievementTBL();
-                        if (o is string)
-                            inertItem.TypeAchievement = (string)o;
+                        var editItem = new AchievementTBL();
 
-                        entities.Entry(inertItem).State = EntityState.Added;
-                        entities.TypeAchievementTBLs.Add(inertItem);
+                        editItem.infoAchievement = GetInfo;
+                        editItem.TitleAchievement = GetTitle;
+                        editItem.DateReceived = GetDate.Value;
+                        editItem.Student = GetStud.idStudents;
+                        editItem.TypeAchievement = TypeGet.idType;
+                        
+                        entities.Entry(editItem).State = EntityState.Added;
+                        entities.AchievementTBLs.Add(editItem);
                         entities.SaveChanges();
                     }
                     entities.TypeAchievementTBLs.Load();
@@ -191,8 +285,12 @@ namespace WpfApp1.ViewModel
         {
             entities = new AttainmentEntities();
             entities.AchievementTBLs.Load();
+            entities.StudentsTBLs.Load();
+            entities.TypeAchievementTBLs.Load();
             var collect = entities.AchievementTBLs.Local.ToBindingList();
             TypeAchievement = new ObservableCollection<AchievementTBL>(collect);
+            GetStudents = new ObservableCollection<StudentsTBL>(entities.StudentsTBLs.Local);
+            GetTypes = new ObservableCollection<TypeAchievementTBL>(entities.TypeAchievementTBLs.Local);
         }
     }
 }
