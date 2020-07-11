@@ -13,7 +13,9 @@ namespace WpfApp1.ViewModel
     {
         private AttainmentEntities entities = null;
         private StudentsTBL oldType = null;
-        private string text = "";
+        private string textFirstName = "";
+        private string textLastName = "";
+        private string textGroup = "";
         RelayCommand editVisibilityCommand;
         RelayCommand editCommand;
         RelayCommand cancelCommand;
@@ -23,13 +25,31 @@ namespace WpfApp1.ViewModel
         Visibility visibility = Visibility.Collapsed;
         private ObservableCollection<StudentsTBL> typeAchievement = null;
 
-        public string GetString
+        public string GetFirstName
         {
-            get { return text; }
+            get { return textFirstName; }
             set
             {
-                text = value;
-                OnPropertyChnge(nameof(GetString));
+                textFirstName = value;
+                OnPropertyChnge(nameof(GetFirstName));
+            }
+        }
+        public string GetLastName
+        {
+            get { return textLastName; }
+            set
+            {
+                textLastName = value;
+                OnPropertyChnge(nameof(GetLastName));
+            }
+        }
+        public string GetGroup
+        {
+            get { return textGroup; }
+            set
+            {
+                textGroup = value;
+                OnPropertyChnge(nameof(GetGroup));
             }
         }
         public Visibility GetVisibility
@@ -50,7 +70,9 @@ namespace WpfApp1.ViewModel
                {
                    if (selectedItem != null)
                    {
-                       GetString = selectedItem.FirstName;
+                       GetFirstName = selectedItem.FirstName;
+                       GetLastName = selectedItem.LastName;
+                       GetGroup = selectedItem.Groups;
                        GetVisibility = Visibility.Visible;
                    }
                }));
@@ -63,7 +85,9 @@ namespace WpfApp1.ViewModel
                 return insertCommand ?? (insertCommand = new RelayCommand(o =>
                 {
                     SelectedItem = null;
-                    GetString = "";
+                    GetFirstName = "";
+                    GetGroup = "";
+                    GetLastName = "";
                     GetVisibility = Visibility.Visible;
                 }));
             }
@@ -77,7 +101,9 @@ namespace WpfApp1.ViewModel
                 selectedItem = value;
                 if (value != null)
                 {
-                    GetString = value.FirstName;
+                    GetLastName = value.LastName;
+                    GetGroup = value.Groups;
+                    GetFirstName = value.FirstName;
                     oldType = selectedItem.Clone() as StudentsTBL;
                     OnPropertyChnge(nameof(SelectedItem));
                 }
@@ -91,8 +117,13 @@ namespace WpfApp1.ViewModel
                 return cancelCommand ??
                    (cancelCommand = new RelayCommand(obj =>
                   {
-                      SelectedItem.FirstName = oldType.FirstName;
-                      SelectedItem = null;
+                      if (oldType != null)
+                      {
+                          SelectedItem.FirstName = oldType.FirstName;
+                          SelectedItem.LastName = oldType.LastName;
+                          SelectedItem.Groups = oldType.Groups;
+                          SelectedItem = null;
+                      }
                       GetVisibility = Visibility.Collapsed;
                   }));
             }
@@ -109,38 +140,50 @@ namespace WpfApp1.ViewModel
             }
 
         }
+        private bool IsNullStrings(params string[] str)
+        {
+            foreach (var item in str)
+            {
+                if (string.IsNullOrEmpty(item))
+                    return false;
+            }
+            return true;
+        }
         public RelayCommand EditAndInsertCommand
         {
             get
             {
                 return editCommand ?? (editCommand = new RelayCommand((o) =>
                 {
-                    if (SelectedItem != null)
+                    if (IsNullStrings(GetFirstName, GetGroup, GetLastName))
                     {
-                        if (!string.IsNullOrEmpty(GetString))
+                        if (SelectedItem != null)
                         {
                             var editItem = entities.StudentsTBLs.Find(SelectedItem.idStudents);
                             if (editItem != null)
                             {
 
-                                editItem.FirstName = GetString;
+                                editItem.FirstName = GetFirstName;
+                                editItem.Groups = GetGroup;
+                                editItem.LastName = GetLastName;
                                 entities.Entry(editItem).State = EntityState.Modified;
                                 entities.SaveChanges();
-                                
+
                             }
                         }
-                    }
-                    else
-                    {
-                        var inertItem = new StudentsTBL();
-                        if (o is string)
-                            inertItem.FirstName = (string)o;
+                        else
+                        {
+                            var inertItem = new StudentsTBL();
+                            inertItem.FirstName = GetFirstName;
+                            inertItem.Groups = GetGroup;
+                            inertItem.LastName = GetLastName;
 
-                        entities.Entry(inertItem).State = EntityState.Added;
-                        entities.StudentsTBLs.Add(inertItem);
-                        entities.SaveChanges();
+                            entities.Entry(inertItem).State = EntityState.Added;
+                            entities.StudentsTBLs.Add(inertItem);
+                            entities.SaveChanges();
+                        }
                     }
-                    entities.TypeAchievementTBLs.Load();
+                    entities.StudentsTBLs.Load();
                     TypeAchievement = entities.StudentsTBLs.Local;
                 }));
             }

@@ -12,7 +12,7 @@ namespace WpfApp1.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class AchievementTBL : ICloneable
+    public partial class AchievementTBL
     {
         public int idAchievement { get; set; }
         public string TitleAchievement { get; set; }
@@ -23,20 +23,5 @@ namespace WpfApp1.Model
     
         public virtual StudentsTBL StudentsTBL { get; set; }
         public virtual TypeAchievementTBL TypeAchievementTBL { get; set; }
-
-        public object Clone()
-        {
-            return new AchievementTBL()
-            {
-                idAchievement = this.idAchievement,
-                TitleAchievement = this.TitleAchievement,
-                Student = this.Student,
-                infoAchievement = this.infoAchievement,
-                StudentsTBL = this.StudentsTBL,
-                DateReceived = this.DateReceived,
-                TypeAchievement = this.TypeAchievement,
-                TypeAchievementTBL = this.TypeAchievementTBL,
-            };
-        }
     }
 }

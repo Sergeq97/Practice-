@@ -11,34 +11,21 @@ namespace WpfApp1.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows.Navigation;
-
-    public partial class StudentsTBL : ICloneable
+    
+    public partial class StudentsTBL
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public StudentsTBL()
         {
             this.AchievementTBLs = new HashSet<AchievementTBL>();
         }
-
+    
         public int idStudents { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Groups { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievementTBL> AchievementTBLs { get; set; }
-
-        public object Clone()
-        {
-            return new StudentsTBL()
-            {
-                LastName = this.LastName,
-                FirstName = this.FirstName,
-                Groups = this.Groups,
-                idStudents = this.idStudents,
-                AchievementTBLs = this.AchievementTBLs,
-            };
-        }
     }
 }

@@ -24,7 +24,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            PFrame.Content = new TypePage();
+         //   PFrame.Content = new TypePage();
+            PFrame.Content = new StudentsView();
 
 
         }

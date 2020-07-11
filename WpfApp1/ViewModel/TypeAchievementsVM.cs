@@ -78,12 +78,23 @@ namespace WpfApp1.ViewModel
                 if (value != null)
                 {
                     GetString = value.TypeAchievement;
-                    oldType = selectedItem.Clone() as TypeAchievementTBL;
+                    oldType = CloneItem();
                     OnPropertyChnge(nameof(SelectedItem));
                 }
 
             }
         }
+        private  TypeAchievementTBL CloneItem()
+        {
+            if (SelectedItem == null)
+                return null;
+            return new TypeAchievementTBL()
+            {
+                idType = selectedItem.idType,
+                TypeAchievement = selectedItem.TypeAchievement,
+                AchievementTBLs = selectedItem.AchievementTBLs,
+            };
+         }
         public RelayCommand CancelCommand
         {
             get
@@ -91,7 +102,8 @@ namespace WpfApp1.ViewModel
                 return cancelCommand ??
                    (cancelCommand = new RelayCommand(obj =>
                   {
-                      SelectedItem.TypeAchievement = oldType.TypeAchievement;
+                      if (oldType != null)
+                          SelectedItem.TypeAchievement = oldType.TypeAchievement;
                       SelectedItem = null;
                       GetVisibility = Visibility.Collapsed;
                   }));
@@ -126,7 +138,7 @@ namespace WpfApp1.ViewModel
                                 editItem.TypeAchievement = GetString;
                                 entities.Entry(editItem).State = EntityState.Modified;
                                 entities.SaveChanges();
-                                
+
                             }
                         }
                     }

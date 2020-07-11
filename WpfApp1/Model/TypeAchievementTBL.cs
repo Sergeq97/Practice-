@@ -12,7 +12,7 @@ namespace WpfApp1.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class TypeAchievementTBL : ICloneable
+    public partial class TypeAchievementTBL
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TypeAchievementTBL()
@@ -25,16 +25,5 @@ namespace WpfApp1.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievementTBL> AchievementTBLs { get; set; }
-
-        
-        public object Clone()
-        {
-           return new TypeAchievementTBL()
-           {
-               idType =this.idType,
-               TypeAchievement = this.TypeAchievement,
-               AchievementTBLs = this.AchievementTBLs
-           };
-        }
     }
 }

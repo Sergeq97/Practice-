@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WpfApp1.View
 {
     /// <summary>
-    /// Логика взаимодействия для TypePage.xaml
+    /// Логика взаимодействия для StudentView.xaml
     /// </summary>
-    public partial class TypePage : Page
+    public partial class StudentsView : Page
     {
-        public TypePage()
+        public StudentsView()
         {
             InitializeComponent();
         }
