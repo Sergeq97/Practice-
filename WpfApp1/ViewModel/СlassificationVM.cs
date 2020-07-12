@@ -13,7 +13,6 @@ namespace WpfApp1.ViewModel
 
         AttainmentEntities entites = null;
         private TypeAchievementTBL selected = null;
-        public List<AchievementTBL> tb { get; set; }
         public List<TypeAchievementTBL> type { get; set; }
         public TypeAchievementTBL Selected
         {
