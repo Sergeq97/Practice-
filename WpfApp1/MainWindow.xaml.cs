@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.View;
+
 
 namespace WpfApp1
 {
@@ -45,6 +47,11 @@ namespace WpfApp1
         private void achievements_Click(object sender, RoutedEventArgs e)
         {
             PFrame.Content = new AttainmentView();
+        }
+
+        private void group_Click(object sender, RoutedEventArgs e)
+        {
+            PFrame.Content = new View.СlassificationP();
         }
     }
 }

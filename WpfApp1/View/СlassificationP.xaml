@@ -1,0 +1,53 @@
+﻿<Page x:Class="WpfApp1.View.СlassificationP"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1.View"
+      xmlns:vm="clr-namespace:WpfApp1.ViewModel"
+      xmlns:m="clr-namespace:WpfApp1.Model"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="СlassificationP">
+
+    <Page.DataContext>
+        <vm:СlassificationVM/>
+    </Page.DataContext>
+    <Grid>
+
+
+        <DataGrid Grid.Row="0" 
+                  x:Name="grid"       
+                  SelectedItem="{Binding Selected}"
+                  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding type}" IsReadOnly="True" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Име" 
+                                        Binding="{Binding Path=TypeAchievement}"/>
+
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" >
+                        <ListView ItemsSource="{Binding Path=DataContext.Selected.AchievementTBLs, 
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type Page}}}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=TitleAchievement}">Достижение</GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=TypeAchievementTBL.TypeAchievement}" Width="100">Тип достижения</GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=infoAchievement}">Информация о достижениях</GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=StudentsTBL.LastName}">Студент</GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Path=StudentsTBL.Groups}">Група</GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+
+
+    </Grid>
+</Page>
