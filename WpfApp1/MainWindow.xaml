@@ -25,9 +25,9 @@
                           x:Name="studentsP" Click="studentsP_Click"/>
                 <MenuItem Header="Достижения"
                           x:Name="achievements" Click="achievements_Click"/>
+            </MenuItem>
                 <MenuItem Header="Группировка"
                           x:Name="group" Click="group_Click"/>
-            </MenuItem>
         </Menu>
 
         <Frame Grid.Row="1" x:Name="PFrame" NavigationUIVisibility="Hidden"/>
