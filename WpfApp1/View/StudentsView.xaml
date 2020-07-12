@@ -8,14 +8,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
      
-      Title="TypePage">
-
-
-
+      Title="Студенты">
     <Page.DataContext>
         <vmType:StudentsVM/>
     </Page.DataContext>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="50"/>
@@ -37,7 +33,18 @@
                     <DataGridTextColumn Header="Фамилия" 
                                         Binding="{Binding Path=LastName}"/>
                     <DataGridTextColumn Header="Группа" 
-                                        Binding="{Binding Path=Groups}"/> 
+                                        Binding="{Binding Path=Groups}"/>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Портфолио" Command="{Binding
+                                Path=DataContext.VisibilityPortCommand,
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor,
+                                AncestorType=Page}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -58,13 +65,31 @@
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type Page}}}" 
                                />
-
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
-
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" Visibility="{Binding Path=DataContext.GetPortVisbility, 
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type Page}}}">
+                            <ListView ItemsSource="{Binding Path=DataContext.SelectedItem.AchievementTBLs, 
+                                RelativeSource={RelativeSource
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type Page}}}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=TitleAchievement}">Достижения</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=TypeAchievementTBL.TypeAchievement}" Width="100">Тип достижения</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=infoAchievement}">Информация о достижениях</GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
             <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
                 <Button Content="Добавить" Command="{Binding 

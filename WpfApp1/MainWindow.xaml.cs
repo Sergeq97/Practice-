@@ -24,11 +24,7 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            //PFrame.Content = new TypePage();
-            //PFrame.Content = new StudentsView();
             PFrame.Content = new AttainmentView();
-
-
         }
 
         private void PFrame_Navigated(object sender, NavigationEventArgs e)
@@ -36,6 +32,19 @@ namespace WpfApp1
 
         }
 
-       
+        private void typeP_Click(object sender, RoutedEventArgs e)
+        {
+            PFrame.Content = new TypePage();
+        }
+
+        private void studentsP_Click(object sender, RoutedEventArgs e)
+        {
+            PFrame.Content = new StudentsView();
+        }
+
+        private void achievements_Click(object sender, RoutedEventArgs e)
+        {
+            PFrame.Content = new AttainmentView();
+        }
     }
 }

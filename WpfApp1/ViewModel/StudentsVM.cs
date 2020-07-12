@@ -21,8 +21,10 @@ namespace WpfApp1.ViewModel
         RelayCommand cancelCommand;
         RelayCommand deleteCommand;
         RelayCommand insertCommand;
+        RelayCommand visibilitiPortCommand;
         StudentsTBL selectedItem = null;
         Visibility visibility = Visibility.Collapsed;
+        Visibility visibilityPort = Visibility.Collapsed;
         private ObservableCollection<StudentsTBL> typeAchievement = null;
 
         public string GetFirstName
@@ -61,7 +63,15 @@ namespace WpfApp1.ViewModel
                 OnPropertyChnge(nameof(GetVisibility));
             }
         }
-
+        public Visibility GetPortVisbility
+        {
+            get { return visibilityPort; }
+            set
+            {
+                visibilityPort = value;
+                OnPropertyChnge(nameof(GetPortVisbility));
+            }
+        }
         public RelayCommand EditVisibilityCommand
         {
             get
@@ -78,6 +88,19 @@ namespace WpfApp1.ViewModel
                }));
             }
         }
+        public RelayCommand VisibilityPortCommand
+        {
+            get
+            {
+                return visibilitiPortCommand ?? (visibilitiPortCommand = new RelayCommand(o =>
+                {
+                    if (selectedItem != null)
+                    {
+                        GetPortVisbility = Visibility.Visible;
+                    }
+                }));
+            }
+        }                     
         public RelayCommand InserVisibilityCommand
         {
             get
@@ -104,6 +127,7 @@ namespace WpfApp1.ViewModel
                     GetLastName = value.LastName;
                     GetGroup = value.Groups;
                     GetFirstName = value.FirstName;
+                    GetPortVisbility = Visibility.Collapsed;
                     oldType = CloneItem();
                     OnPropertyChnge(nameof(SelectedItem));
                 }

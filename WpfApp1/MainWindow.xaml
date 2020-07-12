@@ -10,9 +10,24 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         >
-    
+
 
     <Grid>
-        <Frame x:Name="PFrame" />
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="23"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" VerticalAlignment="Top">
+            <MenuItem Header="Сущности">
+                <MenuItem Header="Тип достижения" 
+                          x:Name="typeP" Click="typeP_Click"/>
+                <MenuItem Header="Студенты"
+                          x:Name="studentsP" Click="studentsP_Click"/>
+                <MenuItem Header="Достижения"
+                          x:Name="achievements" Click="achievements_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <Frame Grid.Row="1" x:Name="PFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
