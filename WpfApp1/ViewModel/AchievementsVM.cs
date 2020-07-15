@@ -200,7 +200,7 @@ namespace WpfApp1.ViewModel
             }
 
         }
-        private bool IsNullStrings(params string[] str)
+        private bool NotNullStrings(params string[] str)
         {
             foreach (var item in str)
             {
@@ -217,7 +217,7 @@ namespace WpfApp1.ViewModel
                 {
                     if (SelectedItem != null)
                     {
-                        if (IsNullStrings(GetInfo, GetTitle, GetDate.ToString()))
+                        if (NotNullStrings(GetInfo, GetTitle, GetDate.ToString()))
                         {
                             var editItem = entities.AchievementTBLs.Find(SelectedItem.idAchievement);
                             if (editItem != null)
@@ -234,24 +234,24 @@ namespace WpfApp1.ViewModel
 
 
                             }
+                            else
+                            {
+                                editItem = new AchievementTBL();
+
+                                editItem.infoAchievement = GetInfo;
+                                editItem.TitleAchievement = GetTitle;
+                                editItem.DateReceived = GetDate.Value;
+                                editItem.Student = GetStud.idStudents;
+                                editItem.TypeAchievement = TypeGet.idType;
+
+                                entities.Entry(editItem).State = EntityState.Added;
+                                entities.AchievementTBLs.Add(editItem);
+                                entities.SaveChanges();
+                            }
+                            entities.AchievementTBLs.Load();
+                            TypeAchievement = entities.AchievementTBLs.Local;
                         }
                     }
-                    else
-                    {
-                        var editItem = new AchievementTBL();
-
-                        editItem.infoAchievement = GetInfo;
-                        editItem.TitleAchievement = GetTitle;
-                        editItem.DateReceived = GetDate.Value;
-                        editItem.Student = GetStud.idStudents;
-                        editItem.TypeAchievement = TypeGet.idType;
-                        
-                        entities.Entry(editItem).State = EntityState.Added;
-                        entities.AchievementTBLs.Add(editItem);
-                        entities.SaveChanges();
-                    }
-                    entities.TypeAchievementTBLs.Load();
-                    TypeAchievement = entities.AchievementTBLs.Local;
                 }));
             }
         }

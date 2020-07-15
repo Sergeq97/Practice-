@@ -183,25 +183,6 @@ namespace WpfApp1.ViewModel
         }
 
 
-        //public RelayCommand AddCommand
-        //{
-
-        //    get
-        //    {
-        //        return addCommand ??
-        //            (addCommand = new RelayCommand((o) =>
-        //            {
-        //                //PhoneViewModel vm = new PhoneViewModel();
-        //                phoneWindow = new PhoneWindow(new Phone());
-        //                if (phoneWindow.ShowDialog() == true)
-        //                {
-        //                    TypeAchievementTBL type = phoneWindow.Phone;
-        //                    entities.TypeAchievementTBLs.Add(type);
-        //                    entities.SaveChanges();
-        //                }
-        //            }));
-        //    }
-        //}
 
         public TypeAchievementsVM()
         {

@@ -219,9 +219,9 @@ namespace WpfApp1.ViewModel
                             entities.StudentsTBLs.Add(inertItem);
                             entities.SaveChanges();
                         }
-                    }
                     entities.StudentsTBLs.Load();
                     TypeAchievement = entities.StudentsTBLs.Local;
+                    }
                 }));
             }
         }
